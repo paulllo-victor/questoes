@@ -51,9 +51,22 @@ app.get("/pergunta/:id",(req,res)=>{
         where:{id}
     }).then(pergunta => {
         if(pergunta != undefined){
-            res.render("question",{
-                pergunta
+
+            Resposta.findAll({
+                where: {
+                    questionId : pergunta.id
+                },
+                order: [
+                    ["id","DESC"]
+                ]
+            }).then(respostas => {
+                res.render("question",{
+                    pergunta,
+                    respostas
+                })
             })
+
+            
         }else{
             res.redirect("/")
         }
